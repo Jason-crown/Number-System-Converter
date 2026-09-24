@@ -17,16 +17,17 @@ OBJECTS := $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(TARGET).exe
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+	if not exist "$(OBJ_DIR)" mkdir "$(OBJ_DIR)"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 run: $(TARGET)
-	./$(TARGET)
+	.\$(TARGET).exe
 
 clean:
-	rm -rf $(OBJ_DIR) $(TARGET)
+	if exist "$(OBJ_DIR)" rmdir /S /Q "$(OBJ_DIR)"
+	if exist "$(TARGET).exe" del /Q "$(TARGET).exe"
 
 rebuild: clean all
